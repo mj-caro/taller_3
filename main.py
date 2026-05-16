@@ -45,20 +45,11 @@ def get_eventos(bar_id: int):
     eventos = list(db["eventos"].find({"bar_id": bar_id}, {"_id": 0}))  
     return eventos
 
+
 @app.post('/bares/{bar_id}/eventos')
 def post_eventos(bar_id: int, datos: dict):
     datos['bar_id'] = bar_id
-    datos['fecha']  = datetime.now().isoformat()
-    
-    evento = {
-        "_id": db["eventos"].count_documents({}) + 1,
-        "bar_id": bar_id,
-        "nombre": datos["nombre"],
-        "fecha": datetime.now().isoformat(),
-        "descripcion": datos["descripcion"],
-        "detalles": datos["detalles"]
-    }
-
-    db["comentarios"].insert_one(evento)
-    
-    return {'mensaje': 'Comentario guardado'}
+    datos['fecha_creacion'] = datetime.now().isoformat()
+    db["eventos"].insert_one(datos)
+    datos.pop('_id', None)  # quita el _id que mongo agrega
+    return {'mensaje': 'Evento guardado'}
