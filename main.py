@@ -10,7 +10,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
+    allow_credentials=True
 )
 
 #os.environ para despliegue. Descomente cuando ya probó todo local.
